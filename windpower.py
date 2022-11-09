@@ -2,36 +2,57 @@ import pandas as pd
 import mlflow
 
 ## NOTE: Optionally, you can use the public tracking server.  Do not use it for data you cannot afford to lose. See note in assignment text. If you leave this line as a comment, mlflow will save the runs to your local filesystem.
-
 # mlflow.set_tracking_uri("http://training.itu.dk:5000/")
 
-# TODO: Set the experiment name
+# Set the experiment name
 mlflow.set_experiment("fhel - Wind Power")
 
 # Import some of the sklearn modules you are likely to use.
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor, plot_tree, export_graphviz
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # Start a run
 # TODO: Set a descriptive name. This is optional, but makes it easier to keep track of your runs.
 with mlflow.start_run(run_name="Test"):
-    # TODO: Insert path to dataset
+    # Insert path to dataset
     df = pd.read_json("dataset.json", orient="split")
 
-    # TODO: Handle missing data
+    # Handle missing data
+    df.dropna()
 
-    pipeline = Pipeline([
-        # TODO: You can start with your pipeline from assignment 1
+    # Create pipeline
+    import custom_transformers as ct 
+    preprocessor = ColumnTransformer(
+      transformers = [
+        (
+          'direction',
+          make_pipeline(
+            ct.DirectionTransformer(['Direction']),
+            StandardScaler()
+          ),
+          ['Direction']
+        ),
+        (
+          'numerical',
+          StandardScaler(),
+          ['Speed']
+        )
     ])
+    pipeline = make_pipeline(preprocessor, DecisionTreeRegressor(random_state=42))
 
     # TODO: Currently the only metric is MAE. You should add more. What other metrics could you use? Why?
     metrics = [
         ("MAE", mean_absolute_error, []),
+        ("MSE", mean_squared_error, []),
+        ("R2", r2_score, []),
     ]
 
     X = df[["Speed","Direction"]]
