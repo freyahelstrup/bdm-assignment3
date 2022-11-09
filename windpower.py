@@ -62,7 +62,7 @@ with mlflow.start_run(run_name="Test"):
 
     #TODO: Log your parameters. What parameters are important to log?
     #HINT: You can get access to the transformers in your pipeline using `pipeline.steps`
-    
+    i = 1
     for train, test in TimeSeriesSplit(number_of_splits).split(X,y):
         pipeline.fit(X.iloc[train],y.iloc[train])
         predictions = pipeline.predict(X.iloc[test])
@@ -71,6 +71,8 @@ with mlflow.start_run(run_name="Test"):
         from matplotlib import pyplot as plt 
         plt.plot(truth.index, truth.values, label="Truth")
         plt.plot(truth.index, predictions, label="Predictions")
+        plt.savefig(f"predictions_{i}.png")
+        i += 1
         plt.show()
         
         # Calculate and save the metrics for this fold
