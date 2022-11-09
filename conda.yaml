@@ -1,0 +1,11 @@
+name: windpower_model
+channels:
+  - defaults
+dependencies:
+  - numpy=1.18.1
+  - pandas=1.0.3
+  - scikit-learn=0.22.1
+  - pip=20.0.2
+  - pip:
+    - mlflow
+    - matplotlib
