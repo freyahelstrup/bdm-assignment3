@@ -5,7 +5,7 @@ import mlflow
 # mlflow.set_tracking_uri("http://training.itu.dk:5000/")
 
 # Set the experiment name
-mlflow.set_experiment("fhel - Wind Power")
+#mlflow.set_experiment("fhel - Wind Power")
 
 # Import some of the sklearn modules you are likely to use.
 from sklearn.pipeline import make_pipeline
