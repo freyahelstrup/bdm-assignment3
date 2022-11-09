@@ -73,7 +73,6 @@ with mlflow.start_run(run_name="Test"):
         plt.plot(truth.index, predictions, label="Predictions")
         plt.savefig(f"predictions_{i}.png")
         i += 1
-        plt.show()
         
         # Calculate and save the metrics for this fold
         for name, func, scores in metrics:
