@@ -26,7 +26,7 @@ with mlflow.start_run(run_name="Test"):
     df = pd.read_json("dataset.json", orient="split")
 
     # Handle missing data
-    df.dropna()
+    df.dropna(how='any',inplace=True)
 
     # Create pipeline
     import custom_transformers as ct 
