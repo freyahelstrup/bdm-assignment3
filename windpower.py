@@ -21,7 +21,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # Start a run
 # TODO: Set a descriptive name. This is optional, but makes it easier to keep track of your runs.
-with mlflow.start_run(run_name="Test"):
+with mlflow.start_run():
     # Insert path to dataset
     df = pd.read_json("dataset.json", orient="split")
 
@@ -46,7 +46,10 @@ with mlflow.start_run(run_name="Test"):
           ['Speed']
         )
     ])
-    pipeline = make_pipeline(preprocessor, DecisionTreeRegressor(random_state=42))
+    regressor = DecisionTreeRegressor(random_state=42)
+    pipeline = make_pipeline(preprocessor, regressor)
+        
+    mlflow.sklearn.log_model(regressor, "model")
 
     # TODO: Currently the only metric is MAE. You should add more. What other metrics could you use? Why?
     metrics = [
@@ -73,7 +76,7 @@ with mlflow.start_run(run_name="Test"):
         plt.plot(truth.index, predictions, label="Predictions")
         plt.savefig(f"predictions_{i}.png")
         i += 1
-        
+
         # Calculate and save the metrics for this fold
         for name, func, scores in metrics:
             score = func(truth, predictions)
