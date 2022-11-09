@@ -46,7 +46,7 @@ with mlflow.start_run():
           ['Speed']
         )
     ])
-    regressor = DecisionTreeRegressor(random_state=42)
+    regressor = DecisionTreeRegressor(max_depth=6, random_state=42)
     pipeline = make_pipeline(preprocessor, regressor)
         
     mlflow.sklearn.log_model(regressor, "model")
@@ -63,8 +63,10 @@ with mlflow.start_run():
 
     number_of_splits = 5
 
-    #TODO: Log your parameters. What parameters are important to log?
+    # Log your parameters. What parameters are important to log?
     #HINT: You can get access to the transformers in your pipeline using `pipeline.steps`
+    mlflow.log_param('decision_tree-max_depth',pipeline.steps[1][1].max_depth)
+
     i = 1
     for train, test in TimeSeriesSplit(number_of_splits).split(X,y):
         pipeline.fit(X.iloc[train],y.iloc[train])
