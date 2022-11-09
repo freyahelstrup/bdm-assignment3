@@ -48,8 +48,6 @@ with mlflow.start_run():
     ])
     regressor = DecisionTreeRegressor(max_depth=6, random_state=42)
     pipeline = make_pipeline(preprocessor, regressor)
-        
-    mlflow.sklearn.log_model(regressor, "model")
 
     # TODO: Currently the only metric is MAE. You should add more. What other metrics could you use? Why?
     metrics = [
@@ -90,3 +88,5 @@ with mlflow.start_run():
             # Are there other summarizations that could be interesting?
             mean_score = sum(scores)/number_of_splits
             mlflow.log_metric(f"mean_{name}", mean_score)
+        
+    mlflow.sklearn.log_model(regressor, "model")
