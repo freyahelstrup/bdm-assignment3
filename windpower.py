@@ -75,6 +75,7 @@ with mlflow.start_run():
         plt.plot(truth.index, truth.values, label="Truth")
         plt.plot(truth.index, predictions, label="Predictions")
         plt.savefig(f"predictions_{i}.png")
+        mlflow.log_artifact(f"predictions_{i}.png")
         i += 1
 
         # Calculate and save the metrics for this fold
