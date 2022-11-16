@@ -4,4 +4,6 @@ conda_env: conda.yaml
 
 entry_points:
   main:
-    command: "python windpower.py"
+    parameters:
+      max_depth: {type: int, default: 6}
+    command: "python windpower.py {max_depth}"
