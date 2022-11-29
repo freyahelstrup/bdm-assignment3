@@ -4,16 +4,8 @@ import mlflow
 ## NOTE: Optionally, you can use the public tracking server.  Do not use it for data you cannot afford to lose. See note in assignment text. If you leave this line as a comment, mlflow will save the runs to your local filesystem.
 #mlflow.set_tracking_uri("http://training.itu.dk:5000/")
 
-## NOTE: Using Azure ML
-from azure.ai.ml import MLClient
-from azure.identity import DefaultAzureCredential
-import mlflow
-ml_client = MLClient.from_config(credential=DefaultAzureCredential())
-azureml_mlflow_uri = ml_client.workspaces.get(ml_client.workspace_name).mlflow_tracking_uri
-mlflow.set_tracking_uri(azureml_mlflow_uri)
-
 # Set the experiment name
-experiment_name = "fhel"
+#experiment_name = "fhel"
 
 # Import some of the sklearn modules you are likely to use.
 from sklearn.pipeline import make_pipeline
@@ -33,11 +25,9 @@ max_depth = int(sys.argv[1]) if len(sys.argv) > 1 else 6
 
 # Start a run
 # TODO: Set a descriptive name. This is optional, but makes it easier to keep track of your runs.
-mlflow.set_experiment(experiment_name)
-experiment = mlflow.get_experiment_by_name(experiment_name)
-client = mlflow.tracking.MlflowClient()
-run = client.create_run(experiment.experiment_id)
-with mlflow.start_run(run_id = run.info.run_id):
+##mlflow.set_experiment(experiment_name)
+
+with mlflow.start_run():
   # Insert path to dataset
   df = pd.read_json("dataset.json", orient="split")
 
